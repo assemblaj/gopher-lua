@@ -52,6 +52,12 @@ type Upvalue struct {
 	closed bool
 }
 
+func (u *Upvalue) Clone() (result *Upvalue) {
+	result = &Upvalue{}
+	result.value = u.value.Clone()
+	return
+}
+
 func (uv *Upvalue) Value() LValue {
 	//if uv.IsClosed() {
 	if uv.closed || uv.reg == nil {
@@ -146,6 +152,21 @@ func (fp *FunctionProto) str(level int, count int) string {
 	}
 	buf = append(buf, fmt.Sprintf("%v; end of function\n", indent))
 	return strings.Join(buf, "")
+}
+
+func (fp *FunctionProto) Clone() *FunctionProto {
+	result := &FunctionProto{}
+
+	result.Code = make([]uint32, len(fp.Code))
+	copy(result.Code, fp.Code)
+
+	result.Constants = make([]LValue, len(fp.Constants))
+	copy(result.Constants, fp.Constants)
+
+	result.FunctionPrototypes = make([]*FunctionProto, len(fp.FunctionPrototypes))
+	copy(result.FunctionPrototypes, fp.FunctionPrototypes)
+
+	return result
 }
 
 /* }}} */

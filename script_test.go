@@ -2,12 +2,13 @@ package lua
 
 import (
 	"fmt"
-	"github.com/yuin/gopher-lua/parse"
 	"os"
 	"runtime"
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/yuin/gopher-lua/parse"
 )
 
 const maxMemory = 40
@@ -137,10 +138,10 @@ func TestLocalVarFree(t *testing.T) {
 	}
 }
 
-func TestGlua(t *testing.T) {
-	testScriptDir(t, gluaTests, "_glua-tests")
-}
+// func TestGlua(t *testing.T) {
+// 	testScriptDir(t, gluaTests, "_glua-tests")
+// }
 
-func TestLua(t *testing.T) {
-	testScriptDir(t, luaTests, "_lua5.1-tests")
-}
+// func TestLua(t *testing.T) {
+// 	testScriptDir(t, luaTests, "_lua5.1-tests")
+// }

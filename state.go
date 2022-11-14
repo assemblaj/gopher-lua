@@ -142,6 +142,14 @@ type callFrame struct {
 	NRet       int
 	TailCall   int
 }
+func (cf *callFrame) clone() (result *callFrame) {
+	result = &callFrame{}
+	*result = *cf
+	if cf.Fn != nil {
+		result.Fn = cf.Fn.Clone().(*LFunction)
+	} 
+	return 
+}
 
 type callFrameStack interface {
 	Push(v callFrame)
@@ -156,6 +164,7 @@ type callFrameStack interface {
 	IsEmpty() bool
 
 	FreeAll()
+	Clone() callFrameStack
 }
 
 type fixedCallFrameStack struct {
@@ -212,6 +221,16 @@ func (cs *fixedCallFrameStack) FreeAll() {
 	// nothing to do for fixed callframestack
 }
 
+func (cs *fixedCallFrameStack) Clone() callFrameStack {
+	result := &fixedCallFrameStack{}
+	*result = *cs 
+	result.array = make([]callFrame, len(cs.array))
+	for i,v := range cs.array {
+		result.array[i] = *v.clone()
+	}
+	return result 
+}
+
 // FramesPerSegment should be a power of 2 constant for performance reasons. It will allow the go compiler to change
 // the divs and mods into bitshifts. Max is 256 due to current use of uint8 to count how many frames in a segment are
 // used.
@@ -220,6 +239,14 @@ const FramesPerSegment = 8
 type callFrameStackSegment struct {
 	array [FramesPerSegment]callFrame
 }
+func (cs *callFrameStackSegment) Clone()  *callFrameStackSegment {
+	result := &callFrameStackSegment{}
+	for i,v := range cs.array {
+		result.array[i] = *v.clone() 
+	}
+	return result 
+}
+
 type segIdx uint16
 type autoGrowingCallFrameStack struct {
 	segments []*callFrameStackSegment
@@ -357,6 +384,16 @@ func (cs *autoGrowingCallFrameStack) Pop() *callFrame {
 	}
 	cs.segSp--
 	return &curSeg.array[cs.segSp]
+}
+
+func (cs *autoGrowingCallFrameStack) Clone()  callFrameStack {
+	result := &autoGrowingCallFrameStack{}
+	*result = *cs 
+	result.segments = make([]*callFrameStackSegment, len(cs.segments))
+	for i,v := range cs.segments {
+		result.segments[i] = v.Clone() 
+	}
+	return result 
 }
 
 /* }}} */
@@ -575,6 +612,14 @@ func (rg *registry) SetNumber(reg int, val LNumber) {
 
 func (rg *registry) IsFull() bool {
 	return rg.top >= cap(rg.array)
+}
+
+func (r *registry) clone() (result *registry) {
+	result = &registry{}
+	*result = *r 
+	result.array = make([]LValue, len(r.array))
+	copy(result.array, r.array)
+	return
 }
 
 /* }}} */
