@@ -271,12 +271,20 @@ type Global struct {
 func (g *Global) Clone() (result *Global) {
 	result = &Global{}
 	*result = *g
-	*result.Registry = *g.Registry.Clone().(*LTable)
-	*result.Global = *g.Global.Clone().(*LTable)
+
+	if g.Registry != nil {
+		*result.Registry = *g.Registry.Clone().(*LTable)
+	}
+
+	if g.Global != nil {
+		*result.Global = *g.Global.Clone().(*LTable)
+	}
 
 	result.builtinMts = make(map[int]LValue)
 	for k, v := range g.builtinMts {
-		result.builtinMts[k] = v.Clone()
+		if v != nil {
+			result.builtinMts[k] = v.Clone()
+		}
 	}
 
 	result.tempFiles = make([]*os.File, len(g.tempFiles))
@@ -363,7 +371,9 @@ func (ud *LUserData) Clone() LValue {
 		result.Env = ud.Env.Clone().(*LTable)
 	}
 
-	result.Metatable = ud.Metatable.Clone()
+	if ud.Metatable != nil {
+		result.Metatable = ud.Metatable.Clone()
+	}
 	return result
 }
 

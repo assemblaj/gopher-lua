@@ -54,7 +54,9 @@ type Upvalue struct {
 
 func (u *Upvalue) Clone() (result *Upvalue) {
 	result = &Upvalue{}
-	result.value = u.value.Clone()
+	if u.value != nil {
+		result.value = u.value.Clone()
+	}
 	return
 }
 

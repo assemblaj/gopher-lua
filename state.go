@@ -391,7 +391,9 @@ func (cs *autoGrowingCallFrameStack) Clone()  callFrameStack {
 	*result = *cs 
 	result.segments = make([]*callFrameStackSegment, len(cs.segments))
 	for i,v := range cs.segments {
-		result.segments[i] = v.Clone() 
+		if v != nil {
+			result.segments[i] = v.Clone() 
+		}
 	}
 	return result 
 }
