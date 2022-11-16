@@ -352,8 +352,6 @@ func (l *LState) Clone() LValue {
 	if l.uvcache != nil {
 		*result.uvcache = *l.uvcache.Clone()
 	}
-	l.printReg()
-	l.printCallStack()
 	return result
 }
 
