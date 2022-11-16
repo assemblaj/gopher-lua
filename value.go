@@ -205,7 +205,11 @@ func (tb *LTable) Clone() LValue {
 
 	result.strdict = make(map[string]LValue)
 	for k, v := range tb.strdict {
-		result.strdict[k] = v
+		if v.Type() == LTFunction || v.Type() == LTTable {
+			result.strdict[k] = v
+		} else {
+			result.strdict[k] = v.Clone()
+		}
 	}
 	// for k, v := range tb.strdict {
 	// 	result.strdict[k] = v.Clone()
@@ -348,7 +352,8 @@ func (l *LState) Clone() LValue {
 	if l.uvcache != nil {
 		*result.uvcache = *l.uvcache.Clone()
 	}
-
+	l.printReg()
+	l.printCallStack()
 	return result
 }
 
