@@ -359,6 +359,10 @@ func (l *LState) CallFrame() *callFrame {
 	return l.currentFrame
 }
 
+func (l *LState) CallFrameStack() callFrameStack {
+	return l.stack
+}
+
 type LUserData struct {
 	Value     interface{}
 	Env       *LTable
