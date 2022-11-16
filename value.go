@@ -190,18 +190,18 @@ func (tb *LTable) Clone() LValue {
 	result.Metatable = tb.Metatable.Clone()
 
 	result.array = make([]LValue, len(tb.array))
-	copy(result.array, tb.array)
-	// for i, v := range tb.array {
-	// 	result.array[i] = v.Clone()
-	// }
+	// copy(result.array, tb.array)
+	for i, v := range tb.array {
+		result.array[i] = v.Clone()
+	}
 
 	result.dict = make(map[LValue]LValue)
-	for k, v := range tb.dict {
-		result.dict[k] = v
-	}
 	// for k, v := range tb.dict {
-	// 	result.dict[k] = v.Clone()
+	// 	result.dict[k] = v
 	// }
+	for k, v := range tb.dict {
+		result.dict[k] = v.Clone()
+	}
 
 	result.strdict = make(map[string]LValue)
 	for k, v := range tb.strdict {
@@ -212,10 +212,10 @@ func (tb *LTable) Clone() LValue {
 	// }
 
 	result.keys = make([]LValue, len(tb.keys))
-	copy(result.keys, tb.keys)
-	// for i, v := range tb.keys {
-	// 	result.keys[i] = v.Clone()
-	// }
+	// copy(result.keys, tb.keys)
+	for i, v := range tb.keys {
+		result.keys[i] = v.Clone()
+	}
 
 	return result
 }
@@ -238,21 +238,21 @@ func (fn *LFunction) Clone() LValue {
 	result := &LFunction{}
 	*result = *fn
 
-	// if fn.Env != nil {
-	// 	result.Env = fn.Env.Clone().(*LTable)
-	// }
+	if fn.Env != nil {
+		result.Env = fn.Env.Clone().(*LTable)
+	}
 
-	// if fn.Proto != nil {
-	// 	result.Proto = fn.Proto.Clone()
-	// }
+	if fn.Proto != nil {
+		result.Proto = fn.Proto.Clone()
+	}
 
 	result.Upvalues = make([]*Upvalue, len(fn.Upvalues))
-	copy(result.Upvalues, fn.Upvalues)
-	// for i, v := range fn.Upvalues {
-	// 	if v != nil {
-	// 		result.Upvalues[i] = v.Clone()
-	// 	}
-	// }
+	//copy(result.Upvalues, fn.Upvalues)
+	for i, v := range fn.Upvalues {
+		if v != nil {
+			result.Upvalues[i] = v.Clone()
+		}
+	}
 
 	return result
 }
