@@ -620,7 +620,11 @@ func (r *registry) clone() (result *registry) {
 	result = &registry{}
 	*result = *r 
 	result.array = make([]LValue, len(r.array))
-	copy(result.array, r.array)
+	for i := 0; i < len(r.array); i++ {
+		if r.array[i] != nil {
+			result.array[i] = r.array[i].Clone() 
+		}
+	}
 	return
 }
 
