@@ -355,6 +355,10 @@ func (l *LState) Clone() LValue {
 	return result
 }
 
+func (l *LState) CallFrame() *callFrame {
+	return l.currentFrame
+}
+
 type LUserData struct {
 	Value     interface{}
 	Env       *LTable
