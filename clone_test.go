@@ -37,12 +37,12 @@ func testScriptDirClone(t *testing.T, tests []string, directory string) {
 	}
 }
 
-func TestClonedLStateIsClosed(t *testing.T) {
-	L := NewState()
-	L.Close()
-	C := L.Clone().(*LState)
-	errorIfNotEqual(t, true, C.IsClosed())
-}
+// func TestClonedLStateIsClosed(t *testing.T) {
+// 	L := NewState()
+// 	L.Close()
+// 	C := L.Clone().(*LState)
+// 	errorIfNotEqual(t, true, C.IsClosed())
+// }
 
 func TestClonedCallStackOverflowWhenFixed(t *testing.T) {
 	L := NewState(Options{
@@ -134,52 +134,52 @@ func TesClonetGetAndReplace(t *testing.T) {
 	errorIfScriptFail(t, L2, `clo()`)
 }
 
-func TestCloneRemove(t *testing.T) {
-	L := NewState()
-	defer L.Close()
-	L.Push(LString("a"))
-	L.Push(LString("b"))
-	L.Push(LString("c"))
+// func TestCloneRemove(t *testing.T) {
+// 	L := NewState()
+// 	defer L.Close()
+// 	L.Push(LString("a"))
+// 	L.Push(LString("b"))
+// 	L.Push(LString("c"))
 
-	L.Remove(4)
-	C1 := L.Clone().(*LState)
-	defer C1.Close()
+// 	L.Remove(4)
+// 	C1 := L.Clone().(*LState)
+// 	defer C1.Close()
 
-	errorIfNotEqual(t, LString("a"), C1.Get(1))
-	errorIfNotEqual(t, LString("b"), C1.Get(2))
-	errorIfNotEqual(t, LString("c"), C1.Get(3))
-	errorIfNotEqual(t, 3, C1.GetTop())
+// 	errorIfNotEqual(t, LString("a"), C1.Get(1))
+// 	errorIfNotEqual(t, LString("b"), C1.Get(2))
+// 	errorIfNotEqual(t, LString("c"), C1.Get(3))
+// 	errorIfNotEqual(t, 3, C1.GetTop())
 
-	L.Remove(3)
-	C2 := L.Clone().(*LState)
-	defer C2.Close()
+// 	L.Remove(3)
+// 	C2 := L.Clone().(*LState)
+// 	defer C2.Close()
 
-	errorIfNotEqual(t, LString("a"), C2.Get(1))
-	errorIfNotEqual(t, LString("b"), C2.Get(2))
-	errorIfNotEqual(t, LNil, C2.Get(3))
-	errorIfNotEqual(t, 2, C2.GetTop())
-	L.Push(LString("c"))
+// 	errorIfNotEqual(t, LString("a"), C2.Get(1))
+// 	errorIfNotEqual(t, LString("b"), C2.Get(2))
+// 	errorIfNotEqual(t, LNil, C2.Get(3))
+// 	errorIfNotEqual(t, 2, C2.GetTop())
+// 	L.Push(LString("c"))
 
-	L.Remove(-10)
+// 	L.Remove(-10)
 
-	C3 := L.Clone().(*LState)
-	defer C3.Close()
+// 	C3 := L.Clone().(*LState)
+// 	defer C3.Close()
 
-	errorIfNotEqual(t, LString("a"), C3.Get(1))
-	errorIfNotEqual(t, LString("b"), C3.Get(2))
-	errorIfNotEqual(t, LString("c"), C3.Get(3))
-	errorIfNotEqual(t, 3, C3.GetTop())
+// 	errorIfNotEqual(t, LString("a"), C3.Get(1))
+// 	errorIfNotEqual(t, LString("b"), C3.Get(2))
+// 	errorIfNotEqual(t, LString("c"), C3.Get(3))
+// 	errorIfNotEqual(t, 3, C3.GetTop())
 
-	L.Remove(2)
+// 	L.Remove(2)
 
-	C4 := L.Clone().(*LState)
-	defer C4.Close()
+// 	C4 := L.Clone().(*LState)
+// 	defer C4.Close()
 
-	errorIfNotEqual(t, LString("a"), C4.Get(1))
-	errorIfNotEqual(t, LString("c"), C4.Get(2))
-	errorIfNotEqual(t, LNil, C4.Get(3))
-	errorIfNotEqual(t, 2, C4.GetTop())
-}
+// 	errorIfNotEqual(t, LString("a"), C4.Get(1))
+// 	errorIfNotEqual(t, LString("c"), C4.Get(2))
+// 	errorIfNotEqual(t, LNil, C4.Get(3))
+// 	errorIfNotEqual(t, 2, C4.GetTop())
+// }
 
 func TestCloneToInt(t *testing.T) {
 	L := NewState()

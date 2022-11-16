@@ -693,7 +693,11 @@ func (ls *LState) printReg() {
 	}
 	println("local base:", ls.currentLocalBase())
 	for i := 0; i < ls.reg.Top(); i++ {
-		println(i, ls.reg.Get(i).String())
+		if ls.currentFrame != nil {
+			println(ls.findLocal(ls.currentFrame, i), ls.reg.Get(i).String())
+		} else {
+			println(i, ls.reg.Get(i).String())
+		}
 	}
 	println("-------------------------")
 }
